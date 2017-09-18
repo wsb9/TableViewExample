@@ -21,11 +21,12 @@ class DataItem {
 }
 
 class DataSource {
-    var allItems: [DataItem] = []
-    var exposedItems: [DataItem] = []
-    var exposedRange: CountableRange<Int> = 0..<0
-    weak var delegate: DataChangesDelegate? = nil
+    var allItems: [DataItem] = []                   // entire collection
+    var exposedItems: [DataItem] = []               // emulated loaded part of collection
+    var exposedRange: CountableRange<Int> = 0..<0   // indexes of loaded part
+    weak var delegate: DataChangesDelegate? = nil   // to render collection changes in tableView in runtime
     
+    // fills collection with dummy data
     init(items count: Int) {
         var prevColor = randomColor(otherThan: .white)
         for i in 0 ..< count {
@@ -46,7 +47,7 @@ class DataSource {
         let new = new.clamped(to: 0 ..< allItems.count)     // protect from out-of-bounds errors
         NSLog("exposing items \(new.lowerBound) ..< \(new.upperBound)")
         
-        // small delay to make things noticeable visually
+        // small delay to make things noticeable by human eye
         DispatchQueue.main.asyncAfter(deadline: 0.2.seconds.fromNowGCD) {
             let old = self.exposedRange
             if old.lowerBound > new.lowerBound {

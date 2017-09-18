@@ -16,11 +16,6 @@ class TableViewController: UITableViewController, DataChangesDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         let nib = UINib(nibName: "NumberCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "NumberCell")
         tableView.transform = inverse
@@ -56,7 +51,8 @@ class TableViewController: UITableViewController, DataChangesDelegate {
         return data.height
     }
     
-    // pagination
+    // determine whether it's time to load next page
+    // once we're 25 items from boundary and getting closer, it triggers
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row > 75 {
             dataSource.expose(dataSource.exposedRange.shift(by: 25))
